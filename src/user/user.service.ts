@@ -15,8 +15,8 @@ export class UserService {
         const { user_name } = userDto;
 
         let user: User;
-
-        if(this.userRepository.checkUser(userDto)){
+        const checkUser_bool = await this.userRepository.checkUser(userDto);
+        if(checkUser_bool){
             user = await this.userRepository.getUser(user_name);
         }else {
             user = await this.userRepository.createUser(userDto);

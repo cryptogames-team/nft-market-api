@@ -23,8 +23,8 @@ export class CartDto {
     @ApiProperty({description: 'nft_image'})
     nft_image: string;
 
-    @IsString()
+    @IsNumber()
     @IsNotEmpty()
     @ApiProperty({description: 'price'})
-    price: string;
+    price: number;
 }

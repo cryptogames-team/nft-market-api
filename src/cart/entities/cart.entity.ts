@@ -33,6 +33,6 @@ export class Cart extends BaseEntity {
 
     @ApiProperty()
     @Column()
-    price: string;
+    price: number;
 
 }

@@ -6,7 +6,8 @@ import { logger } from './utils/logger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   setupSwagger(app);
-  await app.listen(3000);
+  app.enableCors();
+  await app.listen(process.env.PORT);
   logger.info(
     `====================== API Start at ${process.env.PORT} PORT!!======================`
   );
