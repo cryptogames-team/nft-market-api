@@ -3,15 +3,25 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { TypeOrmExModule } from '../core/typeorm-ex.module';
 import { UserRepository } from './repositories/user.repository';
-import { MulterModule } from '@nestjs/platform-express';
+import { JwtStrategy } from './jwt.strategy';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 @Module({
   imports: [
-    MulterModule.register({
-      dest: './uploads',
+    PassportModule.register({defaultStrategy: 'jwt'}),
+    JwtModule.register({
+      secret: process.env.JWT_SCRET_KEY,
+      signOptions : {
+        expiresIn: 60 * 60,
+      }
     }),
     TypeOrmExModule.forCustomRepository([UserRepository])
   ],
   controllers: [UserController],
-  providers: [UserService]
+  providers: [UserService, JwtStrategy],
+  exports: [JwtStrategy,PassportModule]
 })
 export class UserModule {}

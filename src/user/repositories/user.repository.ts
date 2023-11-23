@@ -6,11 +6,33 @@ import { CustomRepository } from "src/core/typeorm-ex.decorator";
 
 @CustomRepository(User)
 export class UserRepository extends Repository<User>{
+
+    async getUser(user_name: string): Promise<User> {
+        const user = await this.findOne({ where : { user_name} });
+
+        if (!user) {
+            throw new NotFoundException(`Cant't found user name by ${user_name}`);
+        }
+
+        return user;
+    }
+
+    async checkUser(userDto: UserDto): Promise<Boolean> {
+        const {user_name} = userDto;
+
+        const user = await this.findOne({ where : { user_name} });
+
+        if (!user) {
+            return false;
+        }
+
+        return true;
+    }
     async createUser(userDto: UserDto): Promise<User>{
         
         const {user_name} = userDto;
 
-        const user = this.create({user_name , profile_image : "" })
+        const user = this.create({user_name , profile_image : ""})
 
         try{
             await this.save(user)
@@ -25,25 +47,16 @@ export class UserRepository extends Repository<User>{
         }
     }
 
-    async getUser(userDto: UserDto): Promise<User> {
-        const {user_name} = userDto;
-        const user = await this.findOne({ where : { user_name} });
+    async changeProfileImage(user: User, filePath: string): Promise<string> {
+        const user_row = await this.getUser(user.user_name);
+    
+        user_row.profile_image = filePath;
+        const save_user = await this.save(user_row);
 
-        if (!user) {
-            throw new NotFoundException(`Cant't found user name by ${user_name}`);
+        if(!save_user){
+            throw new InternalServerErrorException();
         }
 
-        return user;
-    }
-
-    async changeProfileImage(userDto: UserDto, filePath: string){
-        const finalFilePate = 'http://221.148.25.234/nft-market-api/' + filePath;
-        
-        const user = await this.getUser(userDto);
-    
-        user.profile_image = finalFilePate;
-        await this.save(user);
-
-        return user;
+        return 'success';
     }
 }
