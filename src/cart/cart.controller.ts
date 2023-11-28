@@ -40,6 +40,14 @@ removeCart(
         return this.cartService.removeCart(user,cart_id);
 }
 
+@Delete('/removeBySaleID/:sale_id')
+removeBySaleID(
+    @AuthUser()user: User,
+    @Param('sale_id')sale_id: number):Promise<string> {
+        return this.cartService.removeBySaleID(user,sale_id);
+    }
+
+
 @Delete('/removeAll')
 @ApiOperation({summary: '내 장바구니 삭제'})
 removeAllCart(

@@ -38,6 +38,22 @@ export class CartRepository extends Repository<Cart> {
         return found;
     }
 
+
+    async IsMyCartBySaleID(user_id: number, sale_id: number ): Promise<Cart> {
+        const found = await this.findOne({
+            where : {
+                user_id,
+                sale_id
+            }
+        });
+
+        if(!found){
+            throw new NotFoundException(`sale_id : ${sale_id} isn't your cart item`);
+        }
+
+        return found;
+    }
+
     async createCart(cartDto: CartDto, user: User): Promise<Cart> {
         const { sale_id, collection_name, nft_name, nft_image, price} = cartDto;
         const { user_id } = user;
@@ -62,6 +78,16 @@ export class CartRepository extends Repository<Cart> {
 
         const carts = await query.getMany();
         return carts;
+    }
+
+    async removeBySaleID(user:User, sale_id: number): Promise<string> {
+        const { user_id } = user;
+
+        const cart = await this.IsMyCartBySaleID(user_id,sale_id);
+
+        await this.delete({cart_id: cart.cart_id});
+        
+        return 'delete success';
     }
 
     async removeCart(user: User, cart_id: number): Promise<string> {

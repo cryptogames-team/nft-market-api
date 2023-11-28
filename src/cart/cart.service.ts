@@ -22,6 +22,10 @@ export class CartService {
         return this.cartRepository.removeCart(user,cart_id);
     }
 
+    removeBySaleID(user: User, sale_id: number): Promise<string> {
+        return this.cartRepository.removeBySaleID(user,sale_id);
+    }
+
     removeAllCart(user: User): Promise<string> {
         return this.cartRepository.removeAllCart(user);
     }

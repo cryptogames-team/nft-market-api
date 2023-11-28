@@ -36,4 +36,10 @@ export class UserController {
         @UploadedFile() file: Express.Multer.File): Promise<string> {
             return this.userService.changeProfileImage(user,file);
     }
+
+    @Post('/isAuth')
+    @UseAuthGuard()
+    isAuth(@AuthUser()user: User){
+        return user;
+    }
 }
