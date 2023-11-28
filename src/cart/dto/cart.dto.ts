@@ -27,4 +27,19 @@ export class CartDto {
     @IsNotEmpty()
     @ApiProperty({description: 'price'})
     price: number;
+
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({description: 'asset_id'})
+    asset_id: string;
+
+    @IsNumber()
+    @IsNotEmpty()
+    @ApiProperty({description: 'offer_id'})
+    offer_id: number;
+
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({description: 'seller'})
+    seller: string;
 }

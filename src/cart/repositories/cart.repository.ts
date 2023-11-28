@@ -39,9 +39,9 @@ export class CartRepository extends Repository<Cart> {
     }
 
     async createCart(cartDto: CartDto, user: User): Promise<Cart> {
-        const { sale_id, collection_name, nft_name, nft_image, price} = cartDto;
+        const { sale_id, collection_name, nft_name, nft_image, price, asset_id, offer_id, seller} = cartDto;
         const { user_id } = user;
-        const cart = this.create({sale_id, collection_name,nft_name,nft_image,price,user_id });
+        const cart = this.create({sale_id, collection_name,nft_name,nft_image,price,user_id, asset_id, offer_id, seller});
 
         try{
             await this.save(cart);

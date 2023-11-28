@@ -35,4 +35,16 @@ export class Cart extends BaseEntity {
     @Column()
     price: number;
 
+    @ApiProperty()
+    @Column()
+    asset_id: string;
+
+    @ApiProperty()
+    @Column()
+    offer_id: number;
+
+    @ApiProperty()
+    @Column()
+    seller: string;
+
 }
